@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Theme_provider from "@/providers/theme_provider";
+import { buildMetadata, SITE_NAME } from "@/lib/seo";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -9,13 +10,12 @@ const inter = Inter({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Macliff LLP | Audit, Tax & Advisory Services in Kenya",
-    template: "%s | Macliff LLP",
-  },
+export const metadata: Metadata = buildMetadata({
+  title: SITE_NAME,
   description:
-    "Macliff LLP is a Certified Public Accounting firm in Kenya offering Audit & Assurance, Tax Services, Advisory, Payroll, and Business Consulting. Trusted partners with over 30 years of experience.",
+    "Macliff LLP is a Certified Public Accounting firm and leading provider of Audit & Assurance, Tax, Advisory and Consulting services in Kenya. Trusted partners with over 30 years of combined experience.",
+  path: "/",
+  image: "https://macliffllp.co.ke/imgs/og-default.webp",
   keywords: [
     "audit Kenya",
     "tax services Kenya",
@@ -27,41 +27,9 @@ export const metadata: Metadata = {
     "Macliff LLP",
     "financial solutions Kenya",
     "bookkeeping Kenya",
+    "ICPAK certified accountants",
   ],
-  authors: [{ name: "Macliff LLP", url: "https://macliffllp.co.ke" }],
-  creator: "Macliff LLP",
-  metadataBase: new URL("https://macliffllp.co.ke"),
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_KE",
-    url: "https://macliffllp.co.ke",
-    siteName: "Macliff LLP",
-    title: "Macliff LLP | Audit, Tax & Advisory Services in Kenya",
-    description:
-      "A Certified Public Accounting firm and leading provider of Audit & Assurance, Tax, Advisory and Consulting services in Kenya. Global mindset, local touch — 30+ years of experience.",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Macliff LLP | Audit, Tax & Advisory Services in Kenya",
-    description:
-      "A Certified Public Accounting firm and leading provider of Audit & Assurance, Tax, Advisory and Consulting services in Kenya.",
-    creator: "@macliffllp",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-snippet": -1,
-      "max-image-preview": "large",
-      "max-video-preview": -1,
-    },
-  },
-};
+});
 
 export default function RootLayout({
   children,

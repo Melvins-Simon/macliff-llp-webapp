@@ -1,4 +1,14 @@
-import { About, Hero, Footer } from "@/components/landing";
+import {
+  About,
+  Hero,
+  Footer,
+  Services,
+  CTA,
+  Testimonials,
+  FAQ,
+  Contact,
+} from "@/components/landing";
+import PartnersStrip from "@/components/landing/partners-strip";
 import LangingPageLayout from "@/components/landing/layout";
 
 export default function Home() {
@@ -6,7 +16,13 @@ export default function Home() {
     <>
       <LangingPageLayout>
         <Hero />
+        <PartnersStrip />
         <About />
+        <Services />
+        <CTA />
+        <Testimonials />
+        <FAQ />
+        <Contact />
         <Footer />
       </LangingPageLayout>
     </>

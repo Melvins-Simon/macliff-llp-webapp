@@ -11,7 +11,8 @@ const slides = [
     gradient: "from-emerald-400 to-teal-300",
     body: "A Certified Public Accounting firm and leading provider of Audit & Assurance, Tax, Advisory and Consulting services in Kenya.",
     cta: "Request Consultation",
-    img: "/imgs/hero/slide-1.webp", // professional team in office / handshake
+    href: "/contact",
+    img: "/imgs/hero/slide-1.webp",
   },
   {
     tag: "30+ Years of Experience",
@@ -19,7 +20,8 @@ const slides = [
     gradient: "from-sky-400 to-cyan-300",
     body: "Trusted partners delivering on our promise to clients with a global perspective and deep local expertise across Kenya.",
     cta: "Our Story",
-    img: "/imgs/hero/slide-2.webp", // Nairobi skyline / city aerial
+    href: "/about",
+    img: "/imgs/hero/slide-2.webp",
   },
   {
     tag: "Audit & Assurance",
@@ -27,7 +29,8 @@ const slides = [
     gradient: "from-emerald-400 to-teal-300 ",
     body: "Strong financial reporting procedures and controls are essential. We perform excellent audits that help your company comply with legal obligations.",
     cta: "Learn More",
-    img: "/imgs/hero/slide-3.webp", // documents / audit papers / magnifying glass
+    href: "/services/audit-assurance",
+    img: "/imgs/hero/slide-3.webp",
   },
   {
     tag: "Tax Services",
@@ -35,7 +38,8 @@ const slides = [
     gradient: "from-amber-600 to-yellow-400",
     body: "We guide you through a continuously changing tax environment resolving difficulties and guaranteeing everything is in order.",
     cta: "Tax Services",
-    img: "/imgs/hero/slide-4.webp", // calculator / tax forms / finance desk
+    href: "/services/tax-consulting",
+    img: "/imgs/hero/slide-4.webp",
   },
   {
     tag: "Advisory Services",
@@ -43,7 +47,8 @@ const slides = [
     gradient: "from-rose-500 to-pink-300 ",
     body: "We specialise in spotting and correcting financial problems within a business, while providing insight on cost savings and revenue growth.",
     cta: "Advisory Services",
-    img: "/imgs/hero/slide-5.webp", // business meeting / whiteboard / strategy
+    href: "/services/advisory-services",
+    img: "/imgs/hero/slide-5.webp",
   },
   {
     tag: "Payroll & HR",
@@ -51,7 +56,8 @@ const slides = [
     gradient: "from-fuchsia-600 to-purple-400",
     body: "End-to-end payroll outsourcing with a secure, accurate, and reasonably priced data processing platform tailored to your business.",
     cta: "Get a Quote",
-    img: "/imgs/hero/slide-6.jpg", // laptop with payroll / HR dashboard
+    href: "/contact",
+    img: "/imgs/hero/slide-6.jpg",
   },
 ];
 
@@ -191,7 +197,7 @@ export default function Hero() {
                     }}
                   >
                     <a
-                      href="#"
+                      href={slide.href}
                       className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background text-sm font-medium hover:opacity-80 transition-opacity"
                     >
                       {slide.cta}

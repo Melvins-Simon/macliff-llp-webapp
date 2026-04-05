@@ -43,7 +43,7 @@ export default function About() {
               <p className="text-base text-muted-foreground leading-relaxed mb-8">
                 Although the company started operations as an LLP in 2023, the
                 three partners have over 30 years of combined experience. We
-                serve as a one-stop finance and accounting solution provider —
+                serve as a one-stop finance and accounting solution provider
                 blending scale, capacity, and coverage with agility, profound
                 insight, and a tailored approach.
               </p>

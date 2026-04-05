@@ -1,3 +1,5 @@
+import { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
 import LangingPageLayout from "@/components/landing/layout";
 import { Footer } from "@/components/landing";
 import { Stats } from "@/components/landing/about/stats";
@@ -7,10 +9,12 @@ import { Timeline } from "@/components/landing/about/timeline";
 import { FadeIn } from "@/components/landing/about/fade-in";
 import { AboutBanner } from "@/components/landing/about/banner";
 
-export const metadata = {
-  title: "About Us | Macliff LLP",
+export const metadata: Metadata = buildMetadata({
+  title: "About Us",
   description:
-    "Learn about MaCliff LLP — Kenya's trusted Certified Public Accounting firm. Over 30 years of combined partner experience in Audit, Tax, Advisory, and Consulting services.",
+    "Learn about MaCliff LLP — Kenya's trusted Certified Public Accounting firm with over 30 years of combined partner experience in Audit, Tax, Advisory, and Consulting.",
+  path: "/about",
+  image: "https://macliffllp.co.ke/imgs/bg.webp",
   keywords: [
     "about Macliff LLP",
     "CPA firm Kenya",
@@ -21,13 +25,7 @@ export const metadata = {
     "Fred Mabeya",
     "Kiphone Omambia",
   ],
-  openGraph: {
-    title: "About Us | Macliff LLP",
-    description:
-      "MaCliff LLP is a certified public accounting firm in Kenya with over 30 years of combined experience in Audit, Tax, Advisory and Consulting.",
-    url: "https://macliffllp.co.ke/about",
-  },
-};
+});
 
 export default function AboutPage() {
   return (
@@ -37,7 +35,7 @@ export default function AboutPage() {
         <AboutBanner />
 
         {/* Intro */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-5">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
             <div>
               <FadeIn delay={0.1}>

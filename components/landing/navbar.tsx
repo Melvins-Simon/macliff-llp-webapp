@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Theme_Switcher } from "@/components/theme-switcher";
-import { Phone, Mail, CalendarCheck } from "lucide-react";
+import { Phone, Mail, CalendarCheck, ChevronDown } from "lucide-react";
 import { FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { cubicBezier } from "framer-motion";
+import { services } from "@/lib/services-data";
 
 const ease = cubicBezier(0.34, 1.1, 0.64, 1);
 
@@ -19,7 +21,6 @@ const links = [
   { link: "Home", href: "/" },
   { link: "About Us", href: "/about" },
   { link: "Services", href: "/services" },
-  { link: "Insights", href: "/insights" },
   { link: "Contact Us", href: "/contact" },
 ];
 
@@ -71,9 +72,118 @@ function MenuIcon({ open }: { open: boolean }) {
   );
 }
 
+function NavLink({
+  link,
+  href,
+  isActive,
+}: {
+  link: string;
+  href: string;
+  isActive: boolean;
+}) {
+  const [hovered, setHovered] = useState(false);
+  const [wasHovered, setWasHovered] = useState(false);
+  const [dropOpen, setDropOpen] = useState(false);
+  const isServices = href === "/services";
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => {
+        setWasHovered(true);
+        setHovered(true);
+        if (isServices) setDropOpen(true);
+      }}
+      onMouseLeave={() => {
+        setHovered(false);
+        if (isServices) setDropOpen(false);
+      }}
+    >
+      <a
+        href={href}
+        className="relative py-1 flex items-center gap-1"
+        style={{
+          color: isActive ? GOLD : "oklch(0.88 0.04 60)",
+          fontWeight: isActive ? 600 : 400,
+        }}
+      >
+        {link}
+        {isServices && (
+          <ChevronDown
+            size={13}
+            style={{
+              transition: "transform 0.2s",
+              transform: dropOpen ? "rotate(180deg)" : "none",
+            }}
+          />
+        )}
+        {isActive && (
+          <span
+            className="absolute bottom-0 left-0 h-[2px] w-full rounded-full"
+            style={{ background: GOLD }}
+          />
+        )}
+        {!isActive && wasHovered && (
+          <motion.span
+            className="absolute bottom-0 left-0 h-[2px] w-full rounded-full"
+            style={{
+              background: GOLD,
+              transformOrigin: hovered ? "left" : "right",
+            }}
+            animate={{ scaleX: hovered ? 1 : 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+          />
+        )}
+      </a>
+
+      {isServices && (
+        <AnimatePresence>
+          {dropOpen && (
+            <motion.div
+              className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-64 rounded-2xl border shadow-xl overflow-hidden z-50"
+              style={{
+                background: `color-mix(in oklch, ${NAVY} 96%, transparent)`,
+                backdropFilter: "blur(20px)",
+                borderColor: "rgba(255,255,255,0.08)",
+              }}
+              initial={{ opacity: 0, y: -8, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.95 }}
+              transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              <a
+                href="/services"
+                className="flex items-center gap-2 px-4 py-3 text-xs font-semibold tracking-widest uppercase border-b hover:opacity-80 transition-opacity"
+                style={{ color: GOLD, borderColor: "rgba(255,255,255,0.08)" }}
+              >
+                All Services →
+              </a>
+              {services.map((s) => {
+                const Icon = s.icon;
+                return (
+                  <a
+                    key={s.slug}
+                    href={`/services/${s.slug}`}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-white/5"
+                    style={{ color: "oklch(0.88 0.04 60)" }}
+                  >
+                    <Icon size={14} className="shrink-0 opacity-60" />
+                    {s.title}
+                  </a>
+                );
+              })}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
+    </div>
+  );
+}
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 48);
@@ -185,26 +295,23 @@ export default function Navbar() {
 
           {/* Desktop nav links */}
           <nav className="hidden md:flex items-center gap-7 text-[15px]">
-            {links.map(({ link, href }) => (
-              <a
-                key={link}
-                href={href}
-                className="transition-colors"
-                style={{ color: "oklch(0.88 0.04 60)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = `${GOLD}`)}
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = "oklch(0.88 0.04 60)")
-                }
-              >
-                {link}
-              </a>
-            ))}
+            {links.map(({ link, href }) => {
+              const isActive = pathname === href;
+              return (
+                <NavLink
+                  key={link}
+                  link={link}
+                  href={href}
+                  isActive={isActive}
+                />
+              );
+            })}
           </nav>
 
           {/* Right side */}
           <div className="flex items-center gap-2 sm:gap-3">
             <a
-              href="#"
+              href="/contact"
               className="hidden sm:inline-flex items-center gap-2 text-[15px] px-5 py-2 rounded-full font-medium transition-all whitespace-nowrap hover:opacity-90"
               style={{
                 background: `linear-gradient(135deg, ${GOLD}, color-mix(in oklch, ${GOLD} 80%, oklch(0.85 0.15 50)))`,
@@ -260,25 +367,34 @@ export default function Navbar() {
           }}
         >
           <nav className="flex flex-col p-3 gap-1 text-[15px]">
-            {links.map(({ link, href }) => (
-              <a
-                key={link}
-                href={href}
-                onClick={() => setMenuOpen(false)}
-                className="py-3 px-4 rounded-xl transition-colors"
-                style={{ color: "oklch(0.88 0.04 60)" }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = `color-mix(in oklch, ${GOLD} 10%, transparent)`)
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "transparent")
-                }
-              >
-                {link}
-              </a>
-            ))}
+            {links.map(({ link, href }) => {
+              const isActive = pathname === href;
+              return (
+                <a
+                  key={link}
+                  href={href}
+                  onClick={() => setMenuOpen(false)}
+                  className="py-3 px-4 rounded-xl transition-colors flex items-center justify-between"
+                  style={{
+                    color: isActive ? GOLD : "oklch(0.88 0.04 60)",
+                    fontWeight: isActive ? 600 : 400,
+                    background: isActive
+                      ? `color-mix(in oklch, ${GOLD} 10%, transparent)`
+                      : "transparent",
+                  }}
+                >
+                  {link}
+                  {isActive && (
+                    <span
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={{ background: GOLD }}
+                    />
+                  )}
+                </a>
+              );
+            })}
             <a
-              href="#"
+              href="/contact"
               className="mt-2 inline-flex items-center justify-center gap-2 py-3 px-4 rounded-full font-medium transition-opacity hover:opacity-90 text-[15px]"
               style={{
                 background: `linear-gradient(135deg, ${GOLD}, color-mix(in oklch, ${GOLD} 80%, oklch(0.85 0.15 50)))`,

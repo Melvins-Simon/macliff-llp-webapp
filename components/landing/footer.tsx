@@ -1,22 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Phone, Mail, MapPin, Send } from "lucide-react";
 import { FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
+import { motion, useInView } from "framer-motion";
+import { zoomIn } from "./about/fade-in";
 
 const services = [
-  "Audit & Assurance",
-  "Tax Services",
-  "Advisory",
-  "Payroll & HR",
-  "Bookkeeping",
-  "Risk Management",
+  { label: "Audit & Assurance", href: "/services/audit-assurance" },
+  { label: "Tax Consulting", href: "/services/tax-consulting" },
+  { label: "Advisory Services", href: "/services/advisory-services" },
+  { label: "Payroll Services", href: "/services/payroll-services" },
+  {
+    label: "Accounting & Bookkeeping",
+    href: "/services/accounting-bookkeeping",
+  },
+  { label: "Business Risk", href: "/services/business-risk" },
 ];
 const links = [
   { link: "Home", href: "/" },
   { link: "About Us", href: "/about" },
   { link: "Services", href: "/services" },
-  { link: "Insights", href: "/insights" },
   { link: "Contact Us", href: "/contact" },
 ];
 const NAVY = "oklch(0.30 0.09 240)";
@@ -25,6 +29,13 @@ const GOLD = "oklch(0.72 0.12 60)";
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const newsletterRef = useRef(null);
+  const footerRef = useRef(null);
+  const newsletterInView = useInView(newsletterRef, {
+    once: true,
+    margin: "-60px",
+  });
+  const footerInView = useInView(footerRef, { once: true, margin: "-60px" });
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +48,11 @@ export default function Footer() {
   return (
     <>
       {/* ── Newsletter strip ── */}
-      <div
+      <motion.div
+        ref={newsletterRef}
+        initial={zoomIn.initial}
+        animate={newsletterInView ? zoomIn.animate : {}}
+        transition={zoomIn.transition}
         className="w-full py-10 sm:py-14 border-b border-cyan-300/50"
         style={{ background: `color-mix(in oklch, ${NAVY} 85%, ${GOLD})` }}
       >
@@ -85,11 +100,15 @@ export default function Footer() {
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* ── Main footer ── */}
-      <footer
+      <motion.footer
+        ref={footerRef}
         className="w-full text-white"
+        initial={zoomIn.initial}
+        animate={footerInView ? zoomIn.animate : {}}
+        transition={zoomIn.transition}
         style={{
           background: `linear-gradient(135deg, ${NAVY} 0%, color-mix(in oklch, ${NAVY} 75%, ${GOLD}) 100%)`,
         }}
@@ -109,14 +128,18 @@ export default function Footer() {
               </p>
               <div className="flex items-center gap-3">
                 <a
-                  href="#"
+                  href="https://linkedin.com/company/macliffllp"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label="LinkedIn"
                   className="w-8 h-8 rounded-full flex items-center justify-center border border-white/20 hover:border-white/60 hover:bg-white/10 transition-all"
                 >
                   <FaLinkedinIn size={13} />
                 </a>
                 <a
-                  href="#"
+                  href="https://x.com/macliffllp"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label="X"
                   className="w-8 h-8 rounded-full flex items-center justify-center border border-white/20 hover:border-white/60 hover:bg-white/10 transition-all"
                 >
@@ -157,12 +180,12 @@ export default function Footer() {
               </h4>
               <ul className="flex flex-col gap-2.5">
                 {services.map((s) => (
-                  <li key={s}>
+                  <li key={s.label}>
                     <a
-                      href="#"
+                      href={s.href}
                       className="text-sm text-white/70 hover:text-white transition-colors"
                     >
-                      {s}
+                      {s.label}
                     </a>
                   </li>
                 ))}
@@ -215,16 +238,22 @@ export default function Footer() {
               © {new Date().getFullYear()} Macliff LLP. All rights reserved.
             </p>
             <div className="flex items-center gap-4">
-              <a href="#" className="hover:text-white/80 transition-colors">
+              <a
+                href="/privacy"
+                className="hover:text-white/80 transition-colors"
+              >
                 Privacy Policy
               </a>
-              <a href="#" className="hover:text-white/80 transition-colors">
+              <a
+                href="/terms"
+                className="hover:text-white/80 transition-colors"
+              >
                 Terms of Service
               </a>
             </div>
           </div>
         </div>
-      </footer>
+      </motion.footer>
     </>
   );
 }
